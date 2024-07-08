@@ -3,11 +3,14 @@ import AccessAlarmIcon from '@mui/icons-material/AccessAlarm'
 import ThreeDRotation from '@mui/icons-material/ThreeDRotation'
 import HomeIcon from '@mui/icons-material/Home'
 import { pink } from '@mui/material/colors'
+import Typography from '@mui/material/Typography'
+
 function App() {
   return (
     <>
       <div>Khoa dep trai</div>
-      <Button variant="text">Text</Button>
+      <Typography variant='body2' color="text.secondary">Hello Cu!</Typography>
+      <Button variant="text" color="success">Text</Button>
       <Button variant="contained">Contained</Button>
       <Button variant="outlined">Outlined</Button>
       <br/>
