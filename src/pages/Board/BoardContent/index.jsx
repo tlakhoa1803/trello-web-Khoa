@@ -8,6 +8,7 @@ function BoardContent() {
       display: 'flex',
       alignItems: 'center'
     }}>
+      Khoa đẹp trai
     </Box>
   )
 }
