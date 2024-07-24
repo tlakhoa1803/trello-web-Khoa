@@ -15,6 +15,7 @@ import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone'
 import Tooltip from '@mui/material/Tooltip'
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline'
 import Profile from './Menus/Profile'
+import CreateIcon from '@mui/icons-material/Create'
 
 function AppBar() {
   return (
@@ -39,7 +40,7 @@ function AppBar() {
           <Recent/>
           <Starred/>
           <Templates/>
-          <Button variant="outlined">Create</Button>
+          <Button variant="outlined" startIcon={<CreateIcon/>}>Create</Button>
         </Box>
       </Box>
       <Box sx={{ display:'flex', alignItems:'center', gap: 2 }}>
