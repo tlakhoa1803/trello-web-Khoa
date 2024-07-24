@@ -1,6 +1,4 @@
 import { experimental_extendTheme as extendTheme } from '@mui/material/styles'
-import { teal, deepOrange, orange, cyan } from '@mui/material/colors'
-
 // Create a theme instance.
 const theme = extendTheme({
   trelloCustom:{
@@ -8,18 +6,8 @@ const theme = extendTheme({
     boardBardHeight: '64px'
   },
   colorSchemes: {
-    light: {
-      palette: {
-        primary: teal,
-        secondary: deepOrange
-      }
-    },
-    dark: {
-      palette: {
-        primary: cyan,
-        secondary: orange
-      }
-    }
+  //   light: {},
+  //   dark: {}
   },
   components: {
     MuiCssBaseline: {
@@ -30,11 +18,11 @@ const theme = extendTheme({
             height: '8px'
           },
           '*::-webkit-scrollbar-thumb': {
-            backgroundColor: '#1abc9c',
+            backgroundColor: '#bdc3c7',
             borderRadius:'10px'
           },
           '*::-webkit-scrollbar-thumb: hover': {
-            backgroundColor: '#16a085',
+            backgroundColor: '#ecf0f1',
             borderRadius:'10px'
           }
         }
@@ -43,35 +31,27 @@ const theme = extendTheme({
     MuiButton: {
       styleOverrides: {
         root: {
-          textTransform: 'none'
+          textTransform: 'none',
+          borderWidth:'0.5px',
+          '&hover': { borderWidth: '1px' }
         }
       }
     },
     MuiOutlinedInput: {
       styleOverrides: {
-        root: ({ theme }) => ({
-          color: theme.palette.primary.main,
+        root:{
           fontSize: '0.9rem',
-          '.MuiOutlinedInput-notchedOutline':{
-            borderColor: theme.palette.primary.light
-          },
-          '&:hover': {
-            '.MuiOutlinedInput-notchedOutline':{
-              borderColor: theme.palette.primary.light
-            }
-          },
-          '& fieldset': {
-            borderWidth: '1px !important'
-          }
-        })
+          '& fieldset': { borderWidth: '0.5px !important' },
+          '&:hover fieldset': { borderWidth: '1.5px !important' },
+          '&.Mui-focused fieldset': { borderWidth: '1.5px !important' }
+        }
       }
     },
     MuiInputLabel: {
       styleOverrides: {
-        root: ({ theme }) => ({
-          color: theme.palette.primary.main,
+        root:{
           fontSize: '0.9rem'
-        })
+        }
       }
     }
   }
