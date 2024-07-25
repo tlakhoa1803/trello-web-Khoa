@@ -1,13 +1,17 @@
 import { experimental_extendTheme as extendTheme } from '@mui/material/styles'
 // Create a theme instance.
+const APP_BAR_HEIGHT = '58px'
+const BOARD_BAR_HEIGHT = '60px'
+const BOARD_CONTENT_HEIGHT = `calc(100vh - ${APP_BAR_HEIGHT} - ${BOARD_BAR_HEIGHT} )`
 const theme = extendTheme({
   trelloCustom:{
-    appBarHeigth: '58px',
-    boardBardHeight: '64px'
+    appBarHeigth: APP_BAR_HEIGHT,
+    boardBardHeight: BOARD_BAR_HEIGHT,
+    boardContentdHeight: BOARD_CONTENT_HEIGHT
   },
   colorSchemes: {
-  //   light: {},
-  //   dark: {}
+    light: {},
+    dark: {}
   },
   components: {
     MuiCssBaseline: {
@@ -24,7 +28,8 @@ const theme = extendTheme({
           '*::-webkit-scrollbar-thumb: hover': {
             backgroundColor: '#ecf0f1',
             borderRadius:'10px'
-          }
+          },
+          '*::-webkit-scrollbar-track': { margin: 16 }
         }
       }
     },
@@ -51,6 +56,13 @@ const theme = extendTheme({
       styleOverrides: {
         root:{
           fontSize: '0.9rem'
+        }
+      }
+    },
+    MuiTypography: {
+      styleOverrides: {
+        root:{
+          '&.MuiTyography-body1': { fontSize: '0.875rem' }
         }
       }
     }
