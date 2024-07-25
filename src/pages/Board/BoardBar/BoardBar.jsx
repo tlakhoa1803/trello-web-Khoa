@@ -29,8 +29,7 @@ function BoardBar() {
       justifyContent: 'space-between',
       gap: 2,
       overflow: 'auto',
-      bgcolor: (theme) => (theme.palette.mode === 'dark' ? '#34495e': '#3498db'),
-      borderBottom: '1px solid white'
+      bgcolor: (theme) => (theme.palette.mode === 'dark' ? '#34495e': '#3498db')
     }}>
       <Box sx={{ display:'flex', alignItems:'center', gap: 2 }}>
         <Chip
