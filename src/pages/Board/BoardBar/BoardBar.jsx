@@ -9,7 +9,7 @@ import Avatar from '@mui/material/Avatar'
 import AvatarGroup from '@mui/material/AvatarGroup'
 import Button from '@mui/material/Button'
 import PersonAddIcon from '@mui/icons-material/PersonAdd'
-
+import { capitalizeFirstLetter } from '~/utils/formatters'
 const BoardBarMenuStyle = {
   color:'white', backgroundColor:'transparent', border: 'none', paddingX: '2px', borderRadius:'4px',
   '.MuiSvgIcon-root': {
@@ -19,7 +19,7 @@ const BoardBarMenuStyle = {
     bgcolor: (theme) => (theme.palette.mode === 'dark' ? '#2c3e50': '#2980b9')
   }
 }
-function BoardBar() {
+function BoardBar( { board } ) {
   return (
     <Box px={ 2 } sx={{
       width:'100%',
@@ -35,13 +35,13 @@ function BoardBar() {
         <Chip
           sx={BoardBarMenuStyle}
           icon={<DashboardIcon />}
-          label="Olezeyu Dev"
+          label= {board?.title}
           onClick={() => {}}
         />
         <Chip
           sx={BoardBarMenuStyle}
           icon={<VpnLockIcon />}
-          label="Public/Private Workspaces"
+          label={capitalizeFirstLetter(board?.type) }
           onClick={() => {}}
         />
         <Chip

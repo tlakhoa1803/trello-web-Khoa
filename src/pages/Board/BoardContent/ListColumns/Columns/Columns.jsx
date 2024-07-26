@@ -17,12 +17,14 @@ import DeleteForeverIcon from '@mui/icons-material/DeleteForever'
 import AddCardIcon from '@mui/icons-material/AddCard'
 import DragHandleIcon from '@mui/icons-material/DragHandle'
 import ListCards from './ListCards/ListCards'
+import { mapOrder } from '~/utils/sorts'
 
-function Columns() {
+function Columns({ column }) {
   const [anchorEl, setAnchorEl] = React.useState(null)
   const open = Boolean(anchorEl)
   const handleClick = (event) => {setAnchorEl(event.currentTarget)}
   const handleClose = () => {setAnchorEl(null)}
+  const orderedCards = mapOrder(column?.cards, column?.cardOrderIds, '_id')
   return (
     <Box sx={{
       bgcolor: (theme) => (theme.palette.mode === 'dark' ? '#333643': '#70a1ff'),
@@ -43,7 +45,7 @@ function Columns() {
         justifyContent: 'space-between'
       }}
       >
-        <Typography variant= 'h6' sx={{ fontWeight: 'Bold', cursor:'pointer', fontSize:'1.2rem' }}>Title Content</Typography>
+        <Typography variant= 'h6' sx={{ fontWeight: 'Bold', cursor:'pointer', fontSize:'1.2rem' }}>{column?.title}</Typography>
         <Box>
           <Tooltip title='More'>
             <ExpandMoreIcon
@@ -92,7 +94,7 @@ function Columns() {
           </Menu>
         </Box>
       </Box>
-      <ListCards/>
+      <ListCards cards={ orderedCards }/>
       {/* Footer */}
       <Box sx={{
         height: (theme) => theme.trelloCustom.columnFooterHeight,
