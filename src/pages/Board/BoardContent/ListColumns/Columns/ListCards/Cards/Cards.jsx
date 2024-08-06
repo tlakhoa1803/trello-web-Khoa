@@ -7,14 +7,22 @@ import CommentIcon from '@mui/icons-material/Comment'
 import AttachmentIcon from '@mui/icons-material/Attachment'
 import Button from '@mui/material/Button'
 import Typography from '@mui/material/Typography'
+import { useSortable } from '@dnd-kit/sortable'
+import { CSS } from '@dnd-kit/utilities'
 function Cards({ card }) {
+  const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id: card._id, data: { ...card } })
+  const dndKitCardsStyles = {
+    transform: CSS.Translate.toString(transform),
+    transition,
+    opacity: isDragging? 0.5: undefined
+  }
   const shouldShowCardActions = () => {
     return (
       !!card?.memberIds?.length || !!card?.comments?.length || !!card?.attachments?.length
     )
   }
   return (
-    <Card sx={{
+    <Card ref={setNodeRef} style={dndKitCardsStyles} {...attributes} {...listeners} sx={{
       cursor: 'pointer',
       boxShadow:'0 1px 1px rgb(0,0,0,0.2)',
       overflow: 'unset'
