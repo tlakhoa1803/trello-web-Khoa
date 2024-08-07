@@ -15,6 +15,7 @@ import { useEffect, useState } from 'react'
 import { arrayMove } from '@dnd-kit/sortable'
 import Cards from './ListColumns/Columns/ListCards/Cards/Cards'
 import Columns from './ListColumns/Columns/Columns'
+import { colors } from '@mui/material'
 
 function BoardContent({ board }) {
   const ACTIVE_DRAG_ITEMS_TYPE = {
@@ -34,14 +35,41 @@ function BoardContent({ board }) {
   useEffect(() => {
     setOrderedColumns(mapOrder(board?.columns, board?.columnOrderIds, '_id'))
   }, [board] )
+
+  const findColumnCardId = (cardID) => {
+    return orderedColumns.find(column => column.cards.map( card => card._id ) ?. includes(cardID))
+  }
   const handleDragStart =(event) => {
     setActiveDragItemId( event?.active?.id )
     setActiveDragItemType(event?.active?.data?.current?.columnId ? ACTIVE_DRAG_ITEMS_TYPE.CARD : ACTIVE_DRAG_ITEMS_TYPE.COLUMN)
     setActiveDragItemData(event?.active?.data?.current)
   }
-  const handleDragEnd = (event) => {
+
+  // Trigger trong quá trình kéo (Drag) 1 phần tử
+  const handleDragOver = (event) => {
+    // Không làm gì thêm nếu kéo thả Columns
+    if ( activeDragItemType === ACTIVE_DRAG_ITEMS_TYPE.CARD ) {
+      return
+    }
+    //Xử lí kéo (Drag) Cards
+    console.log('Handle Drag Over', event)
     const { active, over } = event
-    if (!over) return
+    // Nếu kéo ra khỏi mà không có ô chưa thì return
+    if (! active || !over) return
+    //activeDragingCardId là card đang được kéo
+    const { id: activeDragingCardId, data: { current: activeDragingCardData } } = active
+    //overCardId là card tương tác với card được kéo
+    const { id: overCardId } = over
+    // Tìm 2 column theo CardId
+
+  }
+  const handleDragEnd = (event) => {
+    if ( activeDragItemType === ACTIVE_DRAG_ITEMS_TYPE.CARD ) {
+      return
+    }
+    const { active, over } = event
+    // Nếu kéo ra khỏi mà không có ô chưa thì return
+    if (! active || !over) return
     if ( active.id != over.id ) {
       // lấy vị trí cũ từ active
       const oldIndex = orderedColumns.findIndex(c => c._id === active.id )
@@ -59,7 +87,7 @@ function BoardContent({ board }) {
   const dropAnimation = {
     sideEffects: defaultDropAnimationSideEffects({ styles: { active: { opacity: '0.5' } } } ) }
   return (
-    <DndContext onDragEnd={ handleDragEnd } onDragStart={ handleDragStart } sensors={sensors}>
+    <DndContext onDragEnd={ handleDragEnd } onDragOver={ handleDragOver } onDragStart={ handleDragStart } sensors={sensors}>
       <Box sx={{
         bgcolor: (theme) => (theme.palette.mode === 'dark' ? '#34495e': '#3498db'),
         width:'100%',
