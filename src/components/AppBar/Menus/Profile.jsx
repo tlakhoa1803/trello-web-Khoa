@@ -33,7 +33,7 @@ function Profile() {
         >
           <Avatar sx={{ height: 34, width: 34 }}
             alt='Khoa'
-            src='https://scontent.fsgn22-1.fna.fbcdn.net/v/t39.30808-6/436227910_1876911776154793_6891603738475757147_n.jpg?_nc_cat=106&ccb=1-7&_nc_sid=6ee11a&_nc_eui2=AeHARW7Mr1n05cwEP-DqdyXaOMxpj5b5eZA4zGmPlvl5kPVMhEcJyeUNPDpu-YGdcvCITID8a5evDhUrEe1Fl1g3&_nc_ohc=YcOUJT-ShPYQ7kNvgENBwIH&_nc_ht=scontent.fsgn22-1.fna&oh=00_AYDdy7Cfe9T7LoQV8uHTUFyDtecQk3_hlLveIRvDn_91vA&oe=66A68146'>
+            src='https://scontent.fsgn22-1.fna.fbcdn.net/v/t39.30808-6/453161741_1926063054572998_3783708619943668784_n.jpg?_nc_cat=105&ccb=1-7&_nc_sid=6ee11a&_nc_eui2=AeEQrV5h6HOyBEKhP_rYtTiEGw_doHM8ywcbD92gczzLB6_xZBOBaTzwjYQTTQFZRx0FFJkb_5VLFoB9ai05JV6m&_nc_ohc=N-ivh88PvYEQ7kNvgH5nHbY&_nc_ht=scontent.fsgn22-1.fna&oh=00_AYCwNk8thetMm3q1qF_yY0X_AMH-GK3Kv2ntxLj_XbvEkQ&oe=66BAAD34'>
           </Avatar>
         </IconButton>
       </Tooltip>
