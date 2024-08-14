@@ -26,7 +26,8 @@ function Cards({ card }) {
     <Card ref={setNodeRef} style={dndKitCardsStyles} {...attributes} {...listeners} sx={{
       cursor: 'pointer',
       boxShadow:'0 1px 1px rgb(0,0,0,0.2)',
-      overflow: 'unset'
+      overflow: 'unset',
+      display : card?.FE__PlaceholderCard ? 'none': 'block'
     }}>
       {card?.cover &&<CardMedia sx={{ height: 140 }} image= {card?.cover}/>}
       <CardContent sx={{ p: 1.5, '&:last-child': { p: 1.5 } }}>

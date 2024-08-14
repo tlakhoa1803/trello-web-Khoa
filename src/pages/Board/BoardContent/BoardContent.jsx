@@ -9,15 +9,18 @@ import {
   useSensors,
   DragOverlay,
   defaultDropAnimationSideEffects,
-  closestCorners
+  closestCorners,
+  pointerWithin,
+  getFirstCollision,
+  closestCenter
   // PointerSensor
 } from '@dnd-kit/core'
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { arrayMove } from '@dnd-kit/sortable'
 import Cards from './ListColumns/Columns/ListCards/Cards/Cards'
 import Columns from './ListColumns/Columns/Columns'
-import { cloneDeep } from 'lodash'
-
+import { cloneDeep, isEmpty } from 'lodash'
+import { generatePlaceholderCard } from '~/utils/formatters'
 function BoardContent({ board }) {
   const ACTIVE_DRAG_ITEMS_TYPE = {
     COLUMN: 'ACTIVE_DRAG_ITEMS_TYPE_COLUMN',
@@ -36,7 +39,7 @@ function BoardContent({ board }) {
   const [activeDragItemType, setActiveDragItemType] = useState(null)
   const [activeDragItemData, setActiveDragItemData] = useState(null)
   const [oldColumn, setOldColumn] = useState(null)
-
+  const lastOverId = useRef(null) // điểm va chạm cuối cùng xử lý t.toan phát hiện va chạm
   useEffect(() => {
     setOrderedColumns(mapOrder(board?.columns, board?.columnOrderIds, '_id'))
   }, [board] )
@@ -69,6 +72,9 @@ function BoardContent({ board }) {
       if (nextActiveColumn) {
         //Xóa card ở Column cũ
         nextActiveColumn.cards= nextActiveColumn.cards.filter(card => card._id !== activeDragingCardId)
+        if (isEmpty(nextActiveColumn.cards)) {
+          nextActiveColumn.cards = [generatePlaceholderCard(nextActiveColumn)]
+        }
         //Cập nhật lại mảng cardOrderIds cho chuẩn dữ liệu
         nextActiveColumn.cardOrderIds = nextActiveColumn.cards.map( card => card._id )
       }
@@ -82,6 +88,7 @@ function BoardContent({ board }) {
         }
         //Thêm card đang kéo vào OverColumn vị trí mới
         nextOverColumn.cards = nextOverColumn.cards.toSpliced(newCardIndex, 0, rebuild_activeDraggingCardData)
+        nextOverColumn.cards = nextOverColumn.cards.filter ( card => !card.FE_PlaceholderCard )
         nextOverColumn.cardOrderIds = nextOverColumn.cards.map( card => card._id )
       }
       return nextColumns
@@ -182,10 +189,36 @@ function BoardContent({ board }) {
   }
   const dropAnimation = {
     sideEffects: defaultDropAnimationSideEffects({ styles: { active: { opacity: '0.5' } } } ) }
+
+  // custom lỗi và chạm
+  const collisionDetectionStrategy = useCallback ((args) => {
+    if (activeDragItemType === ACTIVE_DRAG_ITEMS_TYPE.COLUMN) {
+      return closestCorners ({ ...args })
+    }
+    const pointerIntersections = pointerWithin(args)
+    if (!pointerIntersections?.length) return
+    // eslint-disable-next-line no-extra-boolean-cast
+    let overId = getFirstCollision( pointerIntersections, 'id' )
+    if (overId) {
+      // Nếu over là column thì tìm tới card id gần nhất bên trong khu vực va chạm đó dựa vào thuật toán phát hiện va chậm closestCenter và closestCorner
+      const checkColumn = orderedColumns.find( column => column._id == overId)
+      if ( checkColumn ) {
+        overId = closestCenter ({ ...args,
+          droppableContainers: args.droppableContainers.filter(container => {
+            return container._id !== overId && checkColumn?. cardOrderIds?.includes(container.id)})
+        })[0]?.id
+      }
+      lastOverId.current = overId
+      return [{ id: overId }]
+    }
+    //Nếu có overId thì trả về không thì là rỗng tránh bug crash trang
+    return lastOverId.current ? [{ id: lastOverId.current }] :[]
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [activeDragItemType])
   return (
     <DndContext onDragStart={ handleDragStart } onDragOver={ handleDragOver } onDragEnd={ handleDragEnd } sensors={sensors}
       // Thuật Toán Phát Hiện Va Chạm
-      collisionDetection={ closestCorners }>
+      collisionDetection={ collisionDetectionStrategy }>
       <Box sx={{
         bgcolor: (theme) => (theme.palette.mode === 'dark' ? '#34495e': '#3498db'),
         width:'100%',
